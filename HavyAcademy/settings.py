@@ -129,9 +129,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# settings.py
+
+# Keep your existing STATIC_URL
 STATIC_URL = 'static/'
 
-# Media files (uploads)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# This is what Render is asking for!
+# It tells Django where to put static files for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+# Keep your existing directory for local development
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Ensure WhiteNoise is handling the compression
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
