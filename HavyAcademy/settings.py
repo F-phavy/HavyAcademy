@@ -145,3 +145,5 @@ STATICFILES_DIRS = [
 
 # Ensure WhiteNoise is handling the compression
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+WHITENOISE_MANIFEST_STRICT = False
