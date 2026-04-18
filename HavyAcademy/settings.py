@@ -151,11 +151,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Keep your existing directory for local development
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'HavyAcademy', 'static'), # Add this if you have static files here too
 ]
 
 # Ensure WhiteNoise is handling the compression
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 WHITENOISE_MANIFEST_STRICT = False
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
