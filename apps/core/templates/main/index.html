@@ -1,33 +1,148 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block extra_css %}{% endblock %}
+{% block extra_css %}
+<style>
+    /* Premium Stat Cards */
+    .stat-card {
+        background: rgba(255, 255, 255, 0.9) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid #e1d8c1 !important;
+        border-left: 4px solid #c5a059 !important;
+        transition: transform 0.3s ease;
+    }
 
+    .stat-count {
+        font-family: 'Lora', serif;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: #1a2a44;
+    }
+
+    /* Student Registry Table Styling */
+    .table-registry {
+        font-family: 'Lora', serif;
+        background: white;
+        border: 1px solid #e1d8c1;
+    }
+
+    .table-registry th {
+        background-color: #1a2a44;
+        color: #c5a059;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    .action-btn {
+        background: #1a2a44 !important;
+        color: #fdfcf8 !important;
+        border: 1px solid #c5a059 !important;
+        padding: 20px;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .action-btn:hover {
+        background: #c5a059 !important;
+        color: #1a2a44 !important;
+    }
+</style>
+{% endblock %}
+{% if messages %}
+<div class="container mt-3">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} shadow-sm"
+        style="border-radius: 0; border-left: 5px solid #c5a059; background: white; color: #1a2a44; font-family: 'Lora', serif;">
+        <i class="bi bi-info-circle me-2"></i> {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% block content %}
-
 <div class="pagetitle">
     <h1>Dashboard</h1>
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active"><a href="#">Dashboard</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
         </ol>
     </nav>
 </div>
 
 <section class="section dashboard">
     <div class="row">
+        <div class="col-md-6">
+            <div class="card stat-card p-4">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div>
+                        <div class="small text-uppercase text-muted">Total Enrolled Students</div>
+                        <div class="stat-count">{{ total_students }}</div>
+                    </div>
+                    <i class="bi bi-people" style="font-size: 2.5rem; color: #c5a059;"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="row g-2">
+                <div class="col-6">
+                    <a href="{% url 'students:student_create' %}" class="action-btn card text-center">
+                        <i class="bi bi-person-plus mb-2"></i>
+                        <span class="small">Add New Student</span>
+                    </a>
+                </div>
+                <div class="col-6">
+                    <a href="{% url 'students:student_list' %}" class="action-btn card text-center">
+                        <i class="bi bi-journal-text mb-2"></i>
+                        <span class="small">View Registry</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
         <div class="col-12">
-            <div class="card">
-                <div class="card-body text-center">
-                    <h5 class="card-title">Welcome to HavyAcademy Dashboard!</h5>
-                    <p class="card-text">Manage Your Students And Track Their Progress Efficently!!</p>
+            <div class="card p-4">
+                <h5 class="card-title" style="color: #1a2a44;">Recent Entries</h5>
+                <div class="table-responsive">
+                    <table class="table table-registry mt-3">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Registration Date</th>
+                                <th class="text-center">View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in recent_students %}
+                            <tr>
+                                <td>{{ student.first_name }} {{ student.last_name }}</td>
+                                <td>{{ student.email }}</td>
+                                <td>{{ student.created_at|date:"M d, Y" }}</td>
+                                <td class="text-center">
+                                    <a href="{% url 'students:mark_attendance_quick' student.id %}" class="btn btn-sm"
+                                        style="color: #c5a059;" title="Mark Attendance">
+                                        <i class="bi bi-calendar-check"></i> Mark
+                                    </a>
+                                    <a href="{% url 'students:student_profile' student.pk %}" class="text-dark ms-2"
+                                        title="View Profile">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center italic text-muted">No entries found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
 {% endblock %}
-
-{% block extra_scripts %}{% endblock %}

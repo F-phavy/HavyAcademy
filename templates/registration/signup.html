@@ -1,0 +1,214 @@
+{% extends 'main/base.html' %}
+{% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+{% block content %}
+<style>
+    /* 1. LAYOUT & SPACE PURGE */
+    nav,
+    header,
+    .navbar,
+    .header,
+    footer,
+    #footer,
+    .sidebar {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    #main,
+    main {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #1a1a1a;
+        overflow: auto;
+    }
+
+    .auth-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100vw;
+        background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)),
+        url("{% static 'images/signup_bg.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    /* 2. THE WIDER MINIMALIST CARD */
+    .glass-card {
+        width: 600px;
+        background: rgba(20, 20, 20, 0.75) !important;
+        backdrop-filter: blur(35px) saturate(160%);
+        -webkit-backdrop-filter: blur(35px) saturate(160%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 40px;
+        padding: 60px 80px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+        opacity: 0;
+        animation: cardFadeIn 1s ease-out forwards;
+    }
+
+    /* 3. BOLDED BRANDING */
+    .faculty-badge {
+        color: #8c7851;
+        text-transform: uppercase;
+        letter-spacing: 14px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 45px;
+        display: block;
+        text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Target Django Form Labels */
+    form p {
+        margin-bottom: 12px !important;
+        color: #ffffff !important;
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    /* Targeted help text (the "Required" text) */
+    form .helptext {
+        display: block;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+    form input {
+        width: 100%;
+        background: #ffffff !important;
+        border: none !important;
+        border-radius: 50px !important;
+        padding: 15px 25px !important;
+        font-size: 1rem !important;
+        color: #1a1a1a !important;
+        outline: none !important;
+    }
+
+    .btn-auth {
+        width: 100%;
+        padding: 20px;
+        background: #1a1a1a;
+        color: #ffffff;
+        border: 1px solid rgba(140, 120, 81, 0.3);
+        border-radius: 50px;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 25px;
+        transition: 0.4s;
+    }
+
+    .btn-auth:hover {
+        background: #8c7851;
+        border-color: #8c7851;
+        transform: translateY(-2px);
+    }
+
+    .links {
+        margin-top: 25px;
+        text-align: center;
+    }
+
+    .links a {
+        color: #8c7851 !important;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    @keyframes cardFadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+</style>
+<div class="auth-wrapper">
+    <div class="glass-card">
+        <span class="faculty-badge">HavyAcademy Enrollment</span>
+
+        <form method="post" id="auth-form">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+            <div
+                style="color: #ff4d4d; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 10px; margin-bottom: 20px;">
+                {{ form.non_field_errors|striptags }}
+            </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="field-wrapper" style="margin-bottom: 15px; position: relative;">
+                <label style="color: #8c7851; font-weight: bold; display: block; margin-bottom: 5px;">
+                    {{ field.label }}
+                </label>
+
+                <div style="position: relative; width: 100%;">
+                    {{ field }}
+
+                    {% if 'password' in field.name %}
+                    <i class="fas fa-eye-slash toggle-password"
+                        style="position: absolute; right: 25px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #1a1a1a; z-index: 10;">
+                    </i>
+                    {% endif %}
+                </div>
+
+                {% if field.errors %}
+                <div style="color: #ff4d4d; font-size: 0.8rem; margin-top: 5px; font-weight: bold;">
+                    {{ field.errors|striptags }}
+                </div>
+                {% endif %}
+
+                {% if field.help_text %}
+                <div style="color: rgba(255,255,255,0.5); font-size: 0.7rem; margin-top: 5px;">
+                    {{ field.help_text|striptags }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn-auth">Register Account</button>
+        </form>
+
+        <div class="links">
+            <a href="{% url 'login' %}">Already hold a seat? Sign In</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.toggle-password').forEach(item => {
+        item.addEventListener('click', function () {
+            // 1. Find the input that belongs to THIS specific eye icon
+            const fieldWrapper = this.closest('.field-wrapper');
+            const input = fieldWrapper.querySelector('input');
+
+            // 2. Perform the switch based ONLY on the input state
+            if (input.type === "password") {
+                input.type = "text";
+                // Make it an open eye because the password is now VISIBLE
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            } else {
+                input.type = "password";
+                // Make it a crossed eye because the password is now HIDDEN
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            }
+        });
+    });
+</script>
+{% endblock %}

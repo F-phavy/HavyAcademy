@@ -1,6 +1,86 @@
 {% load static %}
 
-<!--sidebar-->
+<style>
+    /* Old Money Sidebar Archive Aesthetic */
+    .sidebar {
+        background-color: #1a2a44 !important;
+        /* Academy Navy */
+        border-right: 2px solid #c5a059;
+        /* Academy Gold */
+        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar-nav .nav-item {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-nav .nav-link {
+        font-family: 'Georgia', serif;
+        background: transparent !important;
+        color: #fdfcf8 !important;
+        /* Ivory Text */
+        font-size: 1rem;
+        transition: 0.3s;
+        border-radius: 0;
+        letter-spacing: 0.5px;
+    }
+
+    .sidebar-nav .nav-link i {
+        color: #c5a059 !important;
+        /* Gold Icons */
+        font-size: 1.2rem;
+    }
+
+    .sidebar-nav .nav-link:hover {
+        background: rgba(197, 160, 89, 0.1) !important;
+        /* Faint Gold Glow */
+        color: #c5a059 !important;
+        padding-left: 25px;
+    }
+
+    .sidebar-nav .nav-link.collapsed {
+        color: #fdfcf8 !important;
+    }
+
+    /* Sub-menu (Collapse) Styling */
+    .sidebar-nav .nav-content {
+        background: rgba(0, 0, 0, 0.2);
+        padding: 5px 0;
+    }
+
+    .sidebar-nav .nav-content a {
+        font-family: 'Georgia', serif;
+        color: #cbd5e0 !important;
+        font-style: italic;
+        font-size: 0.9rem;
+    }
+
+    .sidebar-nav .nav-content a:hover {
+        color: #c5a059 !important;
+    }
+
+    /* Nav Headings (e.g., "Pages") */
+    .nav-heading {
+        font-family: 'Playfair Display', serif;
+        color: #c5a059 !important;
+        text-transform: uppercase;
+        font-size: 0.7rem !important;
+        letter-spacing: 2px;
+        margin-top: 20px !important;
+        opacity: 0.8;
+        border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+        padding-bottom: 5px;
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+
+    /* Chevron Styling */
+    .sidebar-nav .nav-link .bi-chevron-down {
+        font-size: 0.8rem;
+        color: #c5a059 !important;
+    }
+</style>
+
 <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
@@ -33,15 +113,20 @@
         <li class="nav-heading">Pages</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" href="{% url 'core:profile' %}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
-                <i class="bi bi-box-arrow-in-right"></i>
+            <form id="logout-form" method="post" action="{% url 'logout' %}" style="display: none;">
+                {% csrf_token %}
+            </form>
+
+            <a class="nav-link collapsed" href="#"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right"></i>
                 <span>Logout</span>
             </a>
         </li>

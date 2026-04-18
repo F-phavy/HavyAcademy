@@ -3,12 +3,121 @@
 
 {% block extra_css %}
 <style>
-    .student-photo {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        object-fit: cover;
+    /* Old Money Academic Aesthetic */
+    :root {
+        --academy-navy: #1a2a44;
+        --academy-gold: #c5a059;
+        --academy-ivory: #fdfcf8;
+        --academy-border: #e1d8c1;
     }
+
+    .pagetitle h1 {
+        font-family: 'Playfair Display', 'Georgia', serif;
+        color: var(--academy-navy);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .card {
+        background-color: var(--academy-ivory);
+        border: 1px solid var(--academy-border);
+        border-radius: 4px; /* Sharper, more classic corners */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .card-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--academy-navy);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 1.1rem;
+        border-bottom: 2px solid var(--academy-gold);
+        display: inline-block;
+        margin-bottom: 2rem !important;
+    }
+
+    /* Table Styling: The "Registry" Look */
+    .table {
+        border-color: var(--academy-border);
+    }
+
+    .table thead th {
+        background-color: #f4f1ea;
+        color: var(--academy-navy);
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        font-weight: 600;
+        text-transform: capitalize;
+        border-bottom: 2px solid var(--academy-navy);
+    }
+
+    .table tbody tr {
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f9f7f2 !important;
+    }
+
+    /* Student Identity */
+    .student-photo {
+        width: 40px;
+        height: 40px;
+        border-radius: 2px; /* Classic portrait style */
+        object-fit: cover;
+        border: 1px solid var(--academy-gold);
+        padding: 2px;
+        background: #fff;
+    }
+
+    .student-name {
+        font-family: 'Georgia', serif;
+        font-weight: 700;
+        color: var(--academy-navy);
+    }
+
+    /* Specialized Buttons */
+    .btn-primary {
+        background-color: var(--academy-navy);
+        border: 1px solid var(--academy-navy);
+        border-radius: 0;
+        font-family: 'Georgia', serif;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        padding: 10px 20px;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--academy-gold);
+        border-color: var(--academy-gold);
+    }
+
+    .btn-action {
+        border-radius: 0;
+        background: transparent;
+        border: 1px solid var(--academy-border);
+        color: var(--academy-navy);
+    }
+
+    .btn-action:hover {
+        border-color: var(--academy-gold);
+        color: var(--academy-gold);
+    }
+
+    /* Heritage Status Badges */
+    .badge {
+        font-family: 'Georgia', serif;
+        font-style: italic;
+        border-radius: 0;
+        border: 1px solid currentColor;
+        background: transparent !important;
+        padding: 4px 10px;
+    }
+
+    .text-active { color: #2d5a27; }
+    .text-graduated { color: #8e6d13; }
+    .text-dismissed { color: #a31d1d; }
 </style>
 {% endblock %}
 
@@ -17,131 +126,122 @@
 <div class="pagetitle">
     <h1>Student Directory</h1>
     <nav>
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="#">Student List</a></li>
+        <ol class="breadcrumb" style="font-family: 'Georgia', serif; font-size: 0.85rem;">
+            <li class="breadcrumb-item"><a href="#" style="color: var(--academy-gold);">Registry</a></li>
+            <li class="breadcrumb-item active">Archives</li>
         </ol>
     </nav>
 </div>
 
 {% if messages %}
     {% for message in messages %}
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-1"></i>
+    <div class="alert alert-light border-0 shadow-sm rounded-0" role="alert" style="border-left: 4px solid var(--academy-gold) !important;">
+        <i class="bi bi-info-circle me-2" style="color: var(--academy-gold);"></i>
         {{ message }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
 {% endif %}
 
-<section class="section dashboard">
+<section class="section">
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card p-4">
                 <div class="card-body">
-                    <h5 class="card-title">Registerd Students</h5>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="card-title">Registered Students</h5>
+                        <a href="{% url 'students:student_create' %}" class="btn btn-primary">
+                            Enroll New Student
+                        </a>
+                    </div>
 
-                    <a href="{% url 'students:student_create' %}" class="btn btn-primary mb-3">
-                        <i class="fas fa-user-plus"></i> Add New Student
-                    </a>
-
-                    <table class="table table-striped align-middle">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Name</th>
-                                <th>Gender</th>
-                                <th>Academic Level</th>
-                                <th>Age</th>
-                                <th>Enrollment</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for student in students %}
-                            <tr>
-                                <td>{{ forloop.counter }}.</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        {% if student.photo %}
-                                        <img src="{{ student.photo.url }}" alt="{{ student }}" class="student-photo">
-                                        {% else %}
-                                        <img src="{% static 'img/student-img.jpg' %}" alt="Default Profile"
-                                            class="student-photo">
-                                        {% endif %}
-
-                                        <div class="ms-3">
-                                            <h6 class="mb-0">
-                                                {{ student.first_name }} {{ student.last_name }}
-                                            </h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Student Name</th>
+                                    <th>Gender</th>
+                                    <th>Level</th>
+                                    <th>Age</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in students %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if student.photo %}
+                                            <img src="{{ student.photo.url }}" alt="{{ student }}" class="student-photo">
+                                            {% else %}
+                                            <img src="{% static 'img/student-img.jpg' %}" alt="Default Profile" class="student-photo">
+                                            {% endif %}
+                                            <div class="ms-3">
+                                                <div class="student-name">{{ student.first_name }} {{ student.last_name }}</div>
+                                            </div>
                                         </div>
-                                    </div>
-
-                                </td>
-                                <td>{{ student.get_gender_display }}</td>
-                                <td>{{ student.get_current_academic_level_display }}</td>
-                                <td>{{ student.get_age }}</td>
-                                <td>
-                                    {% if student.enrollment_status == 'active' %}
-                                    <span class="badge bg-success">{{ student.enrollment_status }}</span>
-                                    {% elif student.enrollment_status == 'graduated' %}
-                                    <span class="badge bg-warning text-dark">{{ student.enrollment_status }}</span>
-                                    {% elif student.enrollment_status == 'dismissed' %}
-                                    <span class="badge bg-danger">{{ student.enrollment_status }}</span>
-                                    {% elif student.enrollment_status == 'transferred' %}
-                                    <span class="badge bg-secondary">{{ student.enrollment_status }}</span>
-                                    {% endif %}
-                                </td>
-                                <td>
-                                    <a href="{% url 'students:student_profile' student.pk %}" class="btn btn-sm btn-primary me-1">
-                                        <i class="bi bi-eye"></i> View
-                                    </a>
-                                    <a href="{% url 'students:student_edit' student.pk %}"
-                                        class="btn btn-sm btn-warning me-1">
-                                        <i class="bi bi-pencil"></i> Edit
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-danger me-1" data-bs-toggle="modal"
-                                        data-bs-target="#deleteStudent{{ student.pk }}">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </a>
-                                </td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <th colspan="8" class="text-center">
-                                    No Students Registerd!
-                                </th>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>{{ student.get_gender_display }}</td>
+                                    <td>{{ student.get_current_academic_level_display }}</td>
+                                    <td>{{ student.get_age }} yrs</td>
+                                    <td>
+                                        {% if student.enrollment_status == 'active' %}
+                                        <span class="badge text-active">Active Member</span>
+                                        {% elif student.enrollment_status == 'graduated' %}
+                                        <span class="badge text-graduated">Alumni</span>
+                                        {% elif student.enrollment_status == 'dismissed' %}
+                                        <span class="badge text-dismissed">Withdrawn</span>
+                                        {% else %}
+                                        <span class="badge text-muted">{{ student.enrollment_status|title }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'students:student_profile' student.pk %}" class="btn btn-sm btn-action" title="View Folder">
+                                            <i class="bi bi-journal-text"></i>
+                                        </a>
+                                        <a href="{% url 'students:student_edit' student.pk %}" class="btn btn-sm btn-action" title="Edit Record">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-action text-danger" data-bs-toggle="modal" data-bs-target="#deleteStudent{{ student.pk }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-5">
+                                        <p class="text-muted" style="font-family: 'Georgia', serif; font-style: italic;">The registry is currently empty.</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-
 {% for student in students %}
-<div class="modal fade" tabindex="-1" id="deleteStudent{{ student.pk }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="deleteStudent{{ student.pk }}" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-0 border-0">
+            <div class="modal-header" style="background-color: var(--academy-navy); color: white;">
+                <h5 class="modal-title font-serif">Confirm Expulsion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body">
-                <div class="text-center mb-3">
-                    <i class="bi bi-exclamation-triangle-fill text-warning"></i>
-                    <p>Are you certain you want to delete {{ student }}?</p>
-                </div>
+            <div class="modal-body text-center py-4" style="background-color: var(--academy-ivory);">
+                <p style="font-family: 'Georgia', serif;">Are you sure you wish to permanently remove<br><strong>{{ student }}</strong><br>from the academy archives?</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-
+            <div class="modal-footer border-0" style="background-color: var(--academy-ivory);">
+                <button type="button" class="btn btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
                 <form action="{% url 'students:student_delete' student.pk %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Delete Student</button>
+                    <button type="submit" class="btn btn-danger btn-sm rounded-0">Remove Record</button>
                 </form>
             </div>
         </div>
@@ -151,4 +251,3 @@
 
 {% endblock %}
 
-{% block extra_scripts %}{% endblock %}

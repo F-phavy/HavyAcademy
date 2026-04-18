@@ -9,14 +9,21 @@ class Student(models.Model):
         ['f', 'Female']
     )
 
-    CURRENT_LEVEL_CHOICES =(
-        ['P.1', 'Primary 1'],
-        ['P.2', 'Primary 2'],
-        ['P.3', 'Primary 3'],
-        ['P.4', 'Primary 4'],
-        ['P.5', 'Primary 5'],
-    )
-
+    CURRENT_LEVEL_CHOICES = [
+        ('G1', 'Grade 1'),
+        ('G2', 'Grade 2'),
+        ('G3', 'Grade 3'),
+        ('G4', 'Grade 4'),
+        ('G5', 'Grade 5'),
+        ('G6', 'Grade 6'),
+        ('G7', 'Grade 7'),
+        ('G8', 'Grade 8'),
+        ('G9', 'Grade 9'),
+        ('G10', 'Grade 10'),
+        ('G11', 'Grade 11'),
+        ('G12', 'Grade 12'),
+    ]
+    
     ENROLLMENT_STATUS_CHOICES =(
         ['active', 'Active'],
         ['dismissed', 'Dismissed'],
@@ -46,3 +53,11 @@ class Student(models.Model):
         today = date.today()
         age = today.year - self.birth_date.year - ((today.month, today.day) <(self.birth_date.month, self.birth_date.day))
         return age 
+    
+class Attendance(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    is_present = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ('student', 'date') # Prevents marking a student twice on the same day

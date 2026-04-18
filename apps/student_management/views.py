@@ -69,3 +69,25 @@ def student_profile(request, pk):
     }
 
     return render(request, "profile.html", context)    
+
+from django.utils import timezone
+from .models import Student, Attendance
+from django.contrib import messages
+
+def mark_attendance_quick(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    today = timezone.now().date()
+    
+    # Check if already marked to avoid duplicates
+    attendance, created = Attendance.objects.get_or_create(
+        student=student, 
+        date=today,
+        defaults={'is_present': True}
+    )
+    
+    if created:
+        messages.success(request, f"{student.first_name} marked present for today.")
+    else:
+        messages.info(request, f"{student.first_name} was already marked.")
+        
+    return redirect('core:dashboard')

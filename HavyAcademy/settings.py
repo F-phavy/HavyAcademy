@@ -59,13 +59,19 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'HavyAcademy.urls'
 
+# HavyAcademy/settings.py
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'templates',                    # Looks for login/signup
+            BASE_DIR / 'HavyAcademy' / 'templates',    # Looks for your base.html
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -115,6 +121,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+LOGIN_REDIRECT_URL = 'core:dashboard'
+LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -147,3 +157,5 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 WHITENOISE_MANIFEST_STRICT = False
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

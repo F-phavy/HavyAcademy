@@ -1,0 +1,90 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<style>
+    .profile-card {
+        background: #ffffff !important;
+        border: 1px solid #e1d8c1 !important;
+        border-top: 5px solid #c5a059 !important; /* The gold accent */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border-radius: 4px; /* Sharper edges feel more "Old Money" */
+    }
+
+    .profile-img {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border: 3px solid #fdfcf8;
+        outline: 1px solid #e1d8c1;
+        background: #fdfcf8;
+    }
+
+    .label-text {
+        color: #c5a059;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .info-value {
+        color: #1a2a44;
+        font-family: 'Lora', serif;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .faculty-badge {
+        background: #1a2a44;
+        color: #c5a059;
+        padding: 5px 15px;
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="profile-card p-5 text-center">
+                <img src="{% static 'img/profile-img.png' %}" class="rounded-circle profile-img mb-4" alt="Profile">
+                
+                <div class="faculty-badge text-uppercase">Academic Faculty</div>
+                
+                <h2 style="font-family: 'Lora', serif; color: #1a2a44; font-weight: 700;">
+                    {{ user.get_full_name|default:user.username }}
+                </h2>
+                <p class="text-muted mb-5 italic" style="font-family: 'Lora', serif;">HavyAcademy Educator</p>
+
+                <div class="row text-start border-top pt-4" style="border-color: #f4f1ea !important;">
+                    <div class="col-6 mb-3">
+                        <div class="label-text">Username</div>
+                        <div class="info-value">@{{ user.username }}</div>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <div class="label-text">Joined Date</div>
+                        <div class="info-value">{{ user.date_joined|date:"M Y" }}</div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <div class="label-text">Official Email</div>
+                        <div class="info-value">{{ user.email|default:"contact@havyacademy.com" }}</div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3" style="border-top: 1px solid #f4f1ea;">
+                    <p class="text-muted small mb-0">
+                        <i class="bi bi-shield-lock me-1"></i> 
+                        For credentials update, contact the Registry Office.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

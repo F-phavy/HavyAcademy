@@ -1,11 +1,63 @@
 {% load static %}
 
+<style>
+    .footer {
+        background-color: #fdfcf8; /* Ivory background */
+        border-top: 1px solid #e1d8c1;
+        padding: 20px 0;
+        font-family: 'Georgia', serif;
+    }
+
+    .footer .copyright, .footer .credits {
+        color: #1a2a44; /* Academy Navy */
+    }
+
+    .footer .social-links {
+        margin-top: 10px;
+    }
+
+    .footer .social-links a {
+        font-size: 1.2rem;
+        display: inline-block;
+        color: #1a2a44;
+        line-height: 1;
+        margin: 0 10px;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+    .footer .social-links a:hover {
+        color: #c5a059; /* Academy Gold */
+        transform: translateY(-2px);
+    }
+
+    .footer .credits a {
+        color: #c5a059;
+        font-weight: 600;
+        text-decoration: none;
+    }
+</style>
 
 <footer id="footer" class="footer">
-    <div class="copyright">
-        &copy; Copyright <strong><span>HavyAcademy</span></strong>
-    </div>
-    <div class="credits">
-        Developed by <a href="#">Favour--Havy</a>
+    <div class="container text-center">
+        <div class="copyright">
+            &copy; Copyright <strong><span>HavyAcademy</span></strong>
+        </div>
+        
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/favour-samuel-6790833a3?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" title="LinkedIn">
+                <i class="bi bi-linkedin"></i>
+            </a>
+            <a href="https://www.instagram.com/favourr_p?igsh=NHQwNjJ1emo0dHZk" target="_blank" title="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://github.com/F-phavy" target="_blank" title="GitHub">
+                <i class="bi bi-github"></i>
+            </a>
+        </div>
+
+        <div class="credits">
+            Developed by <a href="https://github.com/F-phavy" target="_blank">Favour--Havy</a>
+        </div>
     </div>
 </footer>

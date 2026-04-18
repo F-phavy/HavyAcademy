@@ -1,0 +1,130 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* 1. LAYOUT & FOOTER REMOVAL */
+    #main { margin-left: 0 !important; padding: 0 !important; width: 100% !important; }
+    .sidebar, .header, footer, .footer, #footer { display: none !important; }
+
+    body { margin: 0; padding: 0; background-color: #1a1a1a; overflow-x: hidden; }
+
+    .login-screen {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)),
+                    url("{% static 'images/pass_bg.jpg' %}") no-repeat center center fixed;
+        background-size: cover;
+    }
+
+    .entrance-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 60px;
+        max-width: 1300px; /* Wider for bigger fonts */
+        width: 90%;
+    }
+
+    /* 2. ENHANCED SIDE TEXT */
+    .side-text-area {
+        flex: 1.2; /* Takes up more room for the big text */
+        color: white;
+        opacity: 0;
+        animation: slideFromLeft 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    .side-text-area p {
+        /* DARKER GOLD / BRONZE */
+        color: #725f3a; 
+        text-transform: uppercase;
+        letter-spacing: 8px; /* Increased spacing */
+        font-size: 1.1rem; /* Bigger sub-font */
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+
+    .side-text-area h2 {
+        font-family: 'Lora', serif;
+        /* SIGNIFICANTLY BIGGER FONT */
+        font-size: 4.8rem; 
+        font-weight: 300;
+        line-height: 1.05;
+        text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* 3. GLASS CARD */
+    .glass-card {
+        flex: 0 0 460px;
+        background: rgba(255, 255, 255, 0.08) !important;
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
+        padding: 60px 50px;
+        box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6);
+        text-align: center;
+        opacity: 0;
+        animation: slideFromRight 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    /* FORM ELEMENTS */
+    .input-box {
+        background: white;
+        border-radius: 50px;
+        margin-bottom: 25px;
+        padding: 5px 25px;
+        display: flex;
+        align-items: center;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .input-box input { border: none; padding: 18px 5px; width: 100%; outline: none; font-size: 1.1rem; border-radius: 50px; }
+    .input-box i { color: #725f3a; margin-right: 15px; font-size: 1.2rem; }
+
+    .btn-auth {
+        width: 100%; padding: 22px; background: #1a1a1a; color: #fff;
+        border: none; border-radius: 50px; text-transform: uppercase;
+        letter-spacing: 5px; font-weight: 700; cursor: pointer;
+        transition: 0.4s;
+    }
+    .btn-auth:hover { background: #725f3a; transform: translateY(-3px); }
+
+    /* Animations */
+    @keyframes slideFromLeft { from { opacity: 0; transform: translateX(-120px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideFromRight { from { opacity: 0; transform: translateX(120px); } to { opacity: 1; transform: translateX(0); } }
+</style>
+
+<div class="login-screen">
+    <div class="entrance-container">
+        
+        <div class="side-text-area">
+            <p>Welcome Back</p>
+            <h2>Educating with <br> Vision and Prestige</h2>
+        </div>
+
+        <div class="glass-card">
+            <h1 style="color: white; font-family: 'Lora', serif; font-size: 2.2rem; font-weight: 300; margin-bottom: 40px;">Faculty Portal</h1>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-box">
+                    <i class="fas fa-user-tie"></i>
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-box">
+                    <i class="fas fa-fingerprint"></i>
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-auth">Verify Access</button>
+            </form>
+
+            <div style="margin-top: 35px;">
+                <a href="{% url 'signup' %}" style="color: #725f3a; text-decoration: none; font-weight: 600; letter-spacing: 1px; font-size: 0.9rem;">SIGNUP TO THE ACADEMY</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
