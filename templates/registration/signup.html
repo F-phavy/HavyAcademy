@@ -136,6 +136,37 @@
             opacity: 1;
         }
     }
+
+    /* 4. SIGNUP RESPONSIVE FIXES */
+@media (max-width: 768px) {
+    .glass-card {
+        width: 95%; /* Use almost full width on mobile */
+        max-width: 500px; /* Don't let it get too huge on small tablets */
+        padding: 40px 25px; /* Significantly reduce internal padding */
+        border-radius: 25px; /* Slightly sharper corners for smaller screens */
+    }
+
+    .faculty-badge {
+        letter-spacing: 6px; /* Bring letters closer so they don't wrap */
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+    }
+
+    .btn-auth {
+        padding: 16px; /* Smaller button for easier thumb-tapping */
+        letter-spacing: 3px;
+    }
+
+    /* Adjust the password eye icon position for mobile */
+    .toggle-password {
+        right: 15px !important;
+    }
+
+    form input {
+        padding: 12px 20px !important; /* Slightly smaller inputs */
+        font-size: 0.95rem !important;
+    }
+}
 </style>
 <div class="auth-wrapper">
     <div class="glass-card">
